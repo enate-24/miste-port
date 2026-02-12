@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 const ProfileImage = ({ className, alt }) => {
   const [imageState, setImageState] = useState('loading'); // loading, loaded, error
   const [currentSrc, setCurrentSrc] = useState('');
 
-  // Multiple image sources to try
-  const imageSources = [
+  // Multiple image sources to try - memoized to prevent recreation
+  const imageSources = useMemo(() => [
     // Try importing from assets first
     () => import('../assets/profile.JPG').then(module => module.default).catch(() => null),
     // Then try public folder paths
@@ -16,7 +16,7 @@ const ProfileImage = ({ className, alt }) => {
     // Try with different cases
     '/Profile.JPG',
     '/Profile.jpg'
-  ];
+  ], []);
 
   useEffect(() => {
     const loadImage = async () => {
@@ -60,7 +60,7 @@ const ProfileImage = ({ className, alt }) => {
     };
 
     loadImage();
-  }, []);
+  }, [imageSources]);
 
   if (imageState === 'error' || imageState === 'loading') {
     return (
