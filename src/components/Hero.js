@@ -1,49 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const Hero = () => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [currentImageSrc, setCurrentImageSrc] = useState('');
-
-  // Try multiple image sources
-  const imageSources = [
-    '/profile.JPG',
-    '/profile-photo.JPG',
-    '/profile.jpg',
-    '/profile-photo.jpg',
-    '/profile.jpeg',
-    '/profile.png'
-  ];
-
-  useEffect(() => {
-    // Try to load the first available image
-    const tryLoadImage = async () => {
-      for (const src of imageSources) {
-        try {
-          const img = new Image();
-          img.src = src;
-          await new Promise((resolve, reject) => {
-            img.onload = resolve;
-            img.onerror = reject;
-          });
-          setCurrentImageSrc(src);
-          return;
-        } catch (error) {
-          continue;
-        }
-      }
-      // If no image loads, show placeholder
-      setImageError(true);
-    };
-
-    tryLoadImage();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleImageError = () => {
+    console.log('Image failed to load, showing placeholder');
     setImageError(true);
   };
 
   const handleImageLoad = () => {
+    console.log('Image loaded successfully');
     setImageLoaded(true);
   };
 
@@ -52,9 +19,9 @@ const Hero = () => {
       <div className="container">
         <div className="hero-content">
           <div className="profile-photo-container">
-            {!imageError && currentImageSrc && (
+            {!imageError && (
               <img 
-                src={currentImageSrc}
+                src="/profile.JPG"
                 alt="Wubalem Chekulo Endeshaw" 
                 className={`profile-photo ${imageLoaded ? 'loaded' : ''}`}
                 onError={handleImageError}
@@ -62,7 +29,7 @@ const Hero = () => {
                 style={{ display: imageLoaded ? 'block' : 'none' }}
               />
             )}
-            {(imageError || !currentImageSrc || !imageLoaded) && (
+            {(imageError || !imageLoaded) && (
               <div className="profile-photo-placeholder">
                 <div className="placeholder-initials">
                   WC

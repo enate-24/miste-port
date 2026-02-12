@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Picture Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .profile-test {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #3b82f6;
+            display: block;
+            margin: 20px auto;
+        }
+        .placeholder {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        .status {
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Profile Picture Test</h1>
+        
+        <h2>Testing: /profile.JPG</h2>
+        <img src="profile.JPG" alt="Profile Test" class="profile-test" 
+             onload="showSuccess(this)" 
+             onerror="showError(this)">
+        
+        <div id="status1" class="status">Loading...</div>
+        
+        <h2>Fallback Placeholder:</h2>
+        <div class="placeholder">WC</div>
+        
+        <h2>File Information:</h2>
+        <p><strong>Expected file:</strong> public/profile.JPG</p>
+        <p><strong>URL path:</strong> /profile.JPG</p>
+        <p><strong>Alternative paths tested:</strong></p>
+        <ul>
+            <li>/profile.JPG ✓ (primary)</li>
+            <li>/profile.jpg</li>
+            <li>/profile.jpeg</li>
+            <li>/profile.png</li>
+        </ul>
+    </div>
+
+    <script>
+        function showSuccess(img) {
+            document.getElementById('status1').innerHTML = '✅ Image loaded successfully!';
+            document.getElementById('status1').className = 'status success';
+        }
+        
+        function showError(img) {
+            document.getElementById('status1').innerHTML = '❌ Image failed to load - will show placeholder';
+            document.getElementById('status1').className = 'status error';
+            img.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

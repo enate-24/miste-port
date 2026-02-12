@@ -127,6 +127,14 @@
   margin-bottom: 2rem;
 }
 
+.profile-photo-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
 .profile-photo {
   width: 200px;
   height: 200px;
