@@ -1,41 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import ProfileImage from './ProfileImage';
 
 const Hero = () => {
-  const [imageError, setImageError] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  const handleImageError = () => {
-    console.log('Image failed to load, showing placeholder');
-    setImageError(true);
-  };
-
-  const handleImageLoad = () => {
-    console.log('Image loaded successfully');
-    setImageLoaded(true);
-  };
-
   return (
     <section className="hero">
       <div className="container">
         <div className="hero-content">
           <div className="profile-photo-container">
-            {!imageError && (
-              <img 
-                src="/profile.JPG"
-                alt="Wubalem Chekulo Endeshaw" 
-                className={`profile-photo ${imageLoaded ? 'loaded' : ''}`}
-                onError={handleImageError}
-                onLoad={handleImageLoad}
-                style={{ display: imageLoaded ? 'block' : 'none' }}
-              />
-            )}
-            {(imageError || !imageLoaded) && (
-              <div className="profile-photo-placeholder">
-                <div className="placeholder-initials">
-                  WC
-                </div>
-              </div>
-            )}
+            <ProfileImage 
+              className="profile-photo"
+              alt="Wubalem Chekulo Endeshaw"
+            />
           </div>
           <div className="hero-text">
             <h1 className="gradient-text">Wubalem Chekulo Endeshaw</h1>
