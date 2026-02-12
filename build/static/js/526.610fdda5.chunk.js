@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwubalem_portfolio=self.webpackChunkwubalem_portfolio||[]).push([[526],{526(e,o,p){e.exports=p.p+"static/media/profile.600d4acfb1281ecb3146.JPG"}}]);
