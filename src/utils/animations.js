@@ -1,77 +1,97 @@
-// Animation utilities and scroll handlers
+// Optimized animation utilities for mobile performance
 
-// Check if device is mobile
-const isMobileDevice = () => {
-  return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+// Enhanced mobile/low-end device detection
+const isLowEndDevice = () => {
+  // Mobile detection
+  if (window.innerWidth <= 768) return true;
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return true;
+  
+  // Low-end device detection
+  if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) return true;
+  if (navigator.deviceMemory && navigator.deviceMemory <= 2) return true;
+  
+  // Battery level check (if available)
+  if (navigator.getBattery) {
+    navigator.getBattery().then(battery => {
+      if (battery.level < 0.2) return true; // Low battery
+    });
+  }
+  
+  return false;
 };
 
-// Intersection Observer for scroll animations
+// Minimal intersection observer for low-end devices
 export const initScrollAnimations = () => {
-  // Check if IntersectionObserver is supported
-  if (!window.IntersectionObserver) {
+  if (!window.IntersectionObserver || isLowEndDevice()) {
+    // Fallback: just add animate class to all elements immediately
+    const elementsToAnimate = document.querySelectorAll('.section-enter, .animate-on-scroll');
+    elementsToAnimate.forEach(el => el.classList.add('animate'));
     return null;
   }
 
-  // Reduce complexity on mobile
-  const isMobile = isMobileDevice();
   const observerOptions = {
-    threshold: isMobile ? 0.2 : 0.1,
-    rootMargin: isMobile ? '0px 0px -20px 0px' : '0px 0px -50px 0px'
+    threshold: 0.3,
+    rootMargin: '0px'
   };
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('animate');
-        // Reduce staggered animations on mobile
-        if (!isMobile) {
-          const children = entry.target.querySelectorAll('.animate-on-scroll');
-          children.forEach((child, index) => {
-            setTimeout(() => {
-              child.classList.add('animate');
-            }, index * 100);
-          });
-        }
+        observer.unobserve(entry.target); // Stop observing once animated
       }
     });
   }, observerOptions);
 
-  // Observe all sections and cards
   const elementsToAnimate = document.querySelectorAll('.section-enter, .animate-on-scroll');
   elementsToAnimate.forEach(el => observer.observe(el));
 
   return observer;
 };
 
-// Scroll progress indicator (disabled on mobile)
+// Disabled scroll progress on mobile/low-end devices
 export const initScrollProgress = () => {
-  if (isMobileDevice()) return null;
+  if (isLowEndDevice()) return null;
   
   const progressBar = document.createElement('div');
   progressBar.className = 'scroll-progress';
   document.body.appendChild(progressBar);
 
+  let ticking = false;
   const updateScrollProgress = () => {
-    const scrollTop = window.pageYOffset;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPercent = Math.min((scrollTop / docHeight) * 100, 100);
-    progressBar.style.width = scrollPercent + '%';
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const scrollTop = window.pageYOffset;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = Math.min((scrollTop / docHeight) * 100, 100);
+        progressBar.style.width = scrollPercent + '%';
+        ticking = false;
+      });
+      ticking = true;
+    }
   };
 
   window.addEventListener('scroll', updateScrollProgress, { passive: true });
   return updateScrollProgress;
 };
 
-// Navbar scroll effect
+// Optimized navbar scroll effect
 export const initNavbarScrollEffect = () => {
   const navbar = document.querySelector('.navbar');
   if (!navbar) return null;
   
+  let ticking = false;
   const handleScroll = () => {
-    if (window.scrollY > 50) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        if (window.scrollY > 50) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+        ticking = false;
+      });
+      ticking = true;
     }
   };
   
@@ -79,60 +99,35 @@ export const initNavbarScrollEffect = () => {
   return handleScroll;
 };
 
-// Add ripple effect to buttons (simplified on mobile)
+// Completely disabled ripple effect on mobile/low-end devices
 export const addRippleEffect = () => {
-  const isMobile = isMobileDevice();
-  if (isMobile) return; // Disable ripple on mobile for performance
+  if (isLowEndDevice()) return;
   
   const buttons = document.querySelectorAll('.btn');
   
   buttons.forEach(button => {
     button.addEventListener('click', function(e) {
-      // Remove existing ripples
-      const existingRipples = this.querySelectorAll('.ripple');
-      existingRipples.forEach(ripple => ripple.remove());
-      
-      const ripple = document.createElement('span');
-      const rect = this.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
-      const x = e.clientX - rect.left - size / 2;
-      const y = e.clientY - rect.top - size / 2;
-      
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = x + 'px';
-      ripple.style.top = y + 'px';
-      ripple.classList.add('ripple');
-      ripple.style.position = 'absolute';
-      ripple.style.borderRadius = '50%';
-      ripple.style.background = 'rgba(255, 255, 255, 0.6)';
-      ripple.style.transform = 'scale(0)';
-      ripple.style.animation = 'ripple-animation 0.6s linear';
-      ripple.style.pointerEvents = 'none';
-      
-      this.appendChild(ripple);
-      
+      // Simplified ripple effect
+      this.style.transform = 'scale(0.98)';
       setTimeout(() => {
-        if (ripple.parentNode) {
-          ripple.remove();
-        }
-      }, 600);
+        this.style.transform = '';
+      }, 100);
     });
   });
 };
 
-// Initialize all animations
+// Minimal initialization for better performance
 export const initAllAnimations = () => {
-  // Wait for DOM to be ready
   const init = () => {
     try {
-      initScrollAnimations();
-      initScrollProgress();
+      // Only initialize essential animations
       initNavbarScrollEffect();
       
-      // Delay ripple effect to ensure buttons are rendered
-      setTimeout(() => {
-        addRippleEffect();
-      }, 100);
+      if (!isLowEndDevice()) {
+        initScrollAnimations();
+        initScrollProgress();
+        setTimeout(() => addRippleEffect(), 100);
+      }
       
     } catch (error) {
       console.warn('Animation initialization error:', error);
