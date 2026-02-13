@@ -1665,19 +1665,64 @@ html {
 
 /* Mobile Animation Optimizations */
 @media (max-width: 768px) {
+  /* Disable heavy animations on mobile */
   .card::after,
   .btn::before,
-  .contact-icon::before {
-    display: none;
+  .contact-icon::before,
+  .achievement-stat::after,
+  .experience-card::after,
+  .hero::before,
+  .skills-grid::before,
+  .contact-info::before,
+  .section::after {
+    display: none !important;
   }
   
+  /* Reduce animation complexity */
+  .profile-photo-container::before {
+    animation: none !important;
+  }
+  
+  /* Simplify hover effects */
+  .card:hover,
+  .btn:hover,
+  .nav-link:hover,
+  .achievement-stat:hover,
+  .contact-item:hover .contact-icon {
+    transform: none !important;
+  }
+  
+  /* Disable backdrop filters for better performance */
+  .navbar {
+    backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+  }
+  
+  .nav-menu {
+    backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+  }
+  
+  /* Reduce animation duration */
   .float-animation,
   .float-animation-reverse {
-    animation-duration: 6s;
+    animation-duration: 8s !important;
   }
   
-  .particle {
-    display: none;
+  /* Hide particle effects */
+  .particle,
+  .floating-dots,
+  .grid-pattern,
+  .wave-bg {
+    display: none !important;
+  }
+  
+  /* Optimize scroll animations */
+  .fade-in-up,
+  .fade-in-left,
+  .fade-in-right,
+  .scale-in {
+    transition-duration: 0.4s !important;
   }
 }
 
@@ -2377,5 +2422,47 @@ html {
   .section::after,
   .card::before {
     display: none;
+  }
+}
+/* Mobile-specific profile photo optimizations */
+@media (max-width: 768px) {
+  .profile-photo,
+  .profile-photo-placeholder {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  .profile-photo:hover,
+  .profile-photo-placeholder:hover {
+    transform: none !important;
+  }
+}
+
+/* Performance optimization for mobile devices */
+@media (max-width: 768px) {
+  /* Use GPU acceleration sparingly */
+  .hero-content,
+  .card,
+  .nav-menu {
+    will-change: auto !important;
+  }
+  
+  /* Reduce complex gradients */
+  .hero h1,
+  .gradient-text {
+    background: #1e40af !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: unset !important;
+    background-clip: unset !important;
+    color: #1e40af !important;
+  }
+  
+  /* Simplify box shadows */
+  .card,
+  .navbar.scrolled,
+  .profile-photo,
+  .profile-photo-placeholder {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
   }
 }
