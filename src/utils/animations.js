@@ -1,4 +1,9 @@
-// Animation utilities and scroll handlers
+// Animation utilities with mobile optimization
+
+// Check if device is mobile
+const isMobileDevice = () => {
+  return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
 
 // Intersection Observer for scroll animations
 export const initScrollAnimations = () => {
@@ -7,22 +12,30 @@ export const initScrollAnimations = () => {
     return null;
   }
 
+  const isMobile = isMobileDevice();
   const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    threshold: isMobile ? 0.2 : 0.1,
+    rootMargin: isMobile ? '0px' : '0px 0px -50px 0px'
   };
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('animate');
-        // Add staggered animation to child elements
-        const children = entry.target.querySelectorAll('.animate-on-scroll');
-        children.forEach((child, index) => {
-          setTimeout(() => {
-            child.classList.add('animate');
-          }, index * 100);
-        });
+        
+        // Reduce staggered animations on mobile
+        if (!isMobile) {
+          const children = entry.target.querySelectorAll('.animate-on-scroll');
+          children.forEach((child, index) => {
+            setTimeout(() => {
+              child.classList.add('animate');
+            }, index * 100);
+          });
+        } else {
+          // Immediate animation on mobile
+          const children = entry.target.querySelectorAll('.animate-on-scroll');
+          children.forEach(child => child.classList.add('animate'));
+        }
       }
     });
   }, observerOptions);
@@ -34,8 +47,10 @@ export const initScrollAnimations = () => {
   return observer;
 };
 
-// Scroll progress indicator
+// Scroll progress indicator (disabled on mobile)
 export const initScrollProgress = () => {
+  if (isMobileDevice()) return null;
+  
   const progressBar = document.createElement('div');
   progressBar.className = 'scroll-progress';
   document.body.appendChild(progressBar);
@@ -68,13 +83,23 @@ export const initNavbarScrollEffect = () => {
   return handleScroll;
 };
 
-// Add ripple effect to buttons
+// Add ripple effect to buttons (simplified on mobile)
 export const addRippleEffect = () => {
+  const isMobile = isMobileDevice();
   const buttons = document.querySelectorAll('.btn');
   
   buttons.forEach(button => {
     button.addEventListener('click', function(e) {
-      // Remove existing ripples
+      if (isMobile) {
+        // Simple scale effect on mobile
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          this.style.transform = '';
+        }, 150);
+        return;
+      }
+      
+      // Full ripple effect on desktop
       const existingRipples = this.querySelectorAll('.ripple');
       existingRipples.forEach(ripple => ripple.remove());
       

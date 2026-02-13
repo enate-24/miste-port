@@ -1663,7 +1663,7 @@ html {
   animation: textReveal 1.5s ease-in-out;
 }
 
-/* Mobile Background Animation Optimization */
+/* Mobile Animation Reduction */
 @media (max-width: 768px) {
   /* Hide background animations only on mobile */
   .animated-bg-orbs,
@@ -1673,6 +1673,78 @@ html {
   .wave-bg {
     display: none !important;
   }
+  
+  /* Reduce animation durations */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Disable complex animations */
+  .profile-photo-container::before {
+    animation: none !important;
+  }
+  
+  /* Simplify hover effects */
+  .card:hover,
+  .btn:hover,
+  .achievement-stat:hover,
+  .contact-item:hover .contact-icon {
+    transform: none !important;
+  }
+  
+  /* Reduce scroll animations */
+  .fade-in-up,
+  .fade-in-left,
+  .fade-in-right,
+  .scale-in {
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Disable floating animations */
+  .floating,
+  .pulse {
+    animation: none !important;
+  }
+  
+  /* Simplify profile photo animation */
+  .profile-photo,
+  .profile-photo-placeholder {
+    animation-duration: 0.3s !important;
+  }
+  
+  /* Disable complex pseudo-element animations */
+  .card::after,
+  .btn::before,
+  .experience-card::after,
+  .achievement-stat::after {
+    display: none !important;
+  }
+  
+  /* Reduce staggered animations */
+  .grid .card:nth-child(1) { animation-delay: 0s !important; }
+  .grid .card:nth-child(2) { animation-delay: 0.05s !important; }
+  .grid .card:nth-child(3) { animation-delay: 0.1s !important; }
+  .grid .card:nth-child(4) { animation-delay: 0.15s !important; }
+  .grid .card:nth-child(5) { animation-delay: 0.2s !important; }
+  .grid .card:nth-child(6) { animation-delay: 0.25s !important; }
+  
+  /* Simplify skill list animations */
+  .skill-list li {
+    animation-duration: 0.2s !important;
+  }
+  
+  .skill-list li:nth-child(1) { animation-delay: 0s !important; }
+  .skill-list li:nth-child(2) { animation-delay: 0.05s !important; }
+  .skill-list li:nth-child(3) { animation-delay: 0.1s !important; }
+  .skill-list li:nth-child(4) { animation-delay: 0.15s !important; }
+  .skill-list li:nth-child(5) { animation-delay: 0.2s !important; }
+  .skill-list li:nth-child(6) { animation-delay: 0.25s !important; }
+  .skill-list li:nth-child(7) { animation-delay: 0.3s !important; }
+  .skill-list li:nth-child(8) { animation-delay: 0.35s !important; }
+  .skill-list li:nth-child(9) { animation-delay: 0.4s !important; }
 }
 
 /* Reduced Motion Support */
