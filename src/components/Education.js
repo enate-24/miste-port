@@ -19,7 +19,7 @@ const Education = () => {
             </div>
             <div>
               <p style={{fontWeight: '600', color: '#1e40af'}}>Graduation Date</p>
-              <p style={{color: '#4b5563'}}>July 2023</p>
+              <p style={{color: '#4b5563'}}>Febrary 2024</p>
             </div>
           </div>
           <div style={{marginTop: '2rem', padding: '1rem', background: 'rgba(59, 130, 246, 0.05)', borderRadius: '10px'}}>

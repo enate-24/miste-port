@@ -9,7 +9,7 @@ const About = () => {
           <div className="card animate-on-scroll slide-in-left">
             <h3 style={{color: '#1e40af', marginBottom: '1rem'}}>Personal Information</h3>
             <div style={{display: 'grid', gap: '0.5rem'}}>
-              <p><strong>Age:</strong> 22</p>
+              <p><strong>Age:</strong> 24</p>
               <p><strong>Gender:</strong> Female</p>
               <p><strong>Location:</strong> Addis Ababa, Ethiopia</p>
               <p><strong>Languages:</strong> Amharic (Native), English (Intermediate)</p>
